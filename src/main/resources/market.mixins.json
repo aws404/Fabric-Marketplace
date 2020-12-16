@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.aws404.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "server": [
+    "MinecraftServerAccessor",
+    "ServerPlayerEntityAccessor",
+    "ServerPlayNetworkHandlerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

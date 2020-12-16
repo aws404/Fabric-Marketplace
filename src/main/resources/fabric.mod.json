@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "id": "fabric-marketplace",
+  "version": "${version}",
+
+  "name": "Fabric Marketplace",
+  "description": "A server-sided mod that adds a marketplace and trade abilities to your fabric server",
+  "authors": [
+    "aws404"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/fabric-marketplace/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.aws404.InitFabricMarketplace"
+    ]
+  },
+  "mixins": [
+    "market.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.7.4",
+    "fabric": "*",
+    "minecraft": "1.16.x"
+  },
+  "suggests": {
+    "gunpowder-currency": "*"
+  }
+}
