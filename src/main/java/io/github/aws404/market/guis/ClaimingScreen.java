@@ -1,11 +1,11 @@
 package io.github.aws404.market.guis;
 
-import io.github.aws404.util.gui.container.ContainerBase;
 import io.github.aws404.market.MarketInstance;
 import io.github.aws404.market.currency.CurrencyInstance;
 import io.github.aws404.market.orders.MarketListing;
 import io.github.aws404.market.tasks.CancelTask;
 import io.github.aws404.market.tasks.ClaimTask;
+import io.github.aws404.util.gui.container.ContainerBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.server.network.ServerPlayerEntity;

@@ -2,7 +2,6 @@ package io.github.aws404.util.gui;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.datafixers.util.Pair;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.github.aws404.mixin.ServerPlayerEntityAccessor;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;

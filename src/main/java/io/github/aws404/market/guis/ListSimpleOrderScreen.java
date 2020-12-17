@@ -1,13 +1,13 @@
 package io.github.aws404.market.guis;
 
 import com.mojang.datafixers.util.Pair;
-import io.github.aws404.util.gui.container.ContainerBase;
 import io.github.aws404.market.MarketInstance;
+import io.github.aws404.market.MarketRegistry;
 import io.github.aws404.market.currency.CurrencyInstance;
 import io.github.aws404.market.guis.templates.SelectorScreen;
 import io.github.aws404.market.orders.BuyOrder;
-import io.github.aws404.market.MarketRegistry;
 import io.github.aws404.market.tasks.ListTask;
+import io.github.aws404.util.gui.container.ContainerBase;
 import io.github.aws404.util.input.SignInput;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;

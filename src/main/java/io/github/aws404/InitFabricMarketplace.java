@@ -1,7 +1,7 @@
 package io.github.aws404;
 
-import io.github.aws404.market.MarketRegistry;
 import io.github.aws404.market.MarketInstance;
+import io.github.aws404.market.MarketRegistry;
 import io.github.aws404.util.MojangServerUtils;
 import io.github.aws404.util.gui.CustomHandler;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
