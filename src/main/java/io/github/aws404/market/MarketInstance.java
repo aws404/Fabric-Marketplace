@@ -9,6 +9,7 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.profiler.DummyProfiler;
 import net.minecraft.util.profiler.Profiler;
 import net.minecraft.util.profiler.ProfilerSystem;
 import net.minecraft.util.profiler.ReadableProfiler;
@@ -39,7 +40,8 @@ public class MarketInstance extends ThreadExecutorConsumer<MarketTask, MarketIns
         super("Market");
         this.marketThread = marketThread;
         this.server = server;
-        this.profiler = new ProfilerSystem(Util.nanoTimeSupplier, () -> this.tick, false);
+        //this.profiler = new ProfilerSystem(Util.nanoTimeSupplier, () -> this.tick, false);
+        this.profiler = DummyProfiler.INSTANCE;
 
         MARKET_INSTANCE = this;
 

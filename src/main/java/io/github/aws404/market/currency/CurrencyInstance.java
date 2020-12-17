@@ -1,6 +1,5 @@
 package io.github.aws404.market.currency;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.github.aws404.market.MarketRegistry;
 import net.minecraft.item.ItemStack;
@@ -11,7 +10,6 @@ import net.minecraft.util.Identifier;
 import java.util.Objects;
 
 public class CurrencyInstance {
-    private static final Gson GSON = new Gson();
 
     private final SimpleCurrency type;
     private Number amount;
@@ -39,7 +37,7 @@ public class CurrencyInstance {
 
     public JsonObject serialise() {
         JsonObject object = new JsonObject();
-        object.addProperty("type", type.getCode());
+        object.addProperty("type", type.getBuilder().getIdentifier().toString());
         object.addProperty("amount", amount);
         object.addProperty("data", type.serialise());
         return object;
@@ -75,7 +73,7 @@ public class CurrencyInstance {
     }
 
     public static boolean currenciesMatch(CurrencyInstance left, CurrencyInstance right) {
-        return left.type.getCode().equalsIgnoreCase(right.type.getCode());
+        return left.type.getBuilder().getIdentifier().equals(right.type.getBuilder().getIdentifier());
     }
 
     public CurrencyInstance copy() {

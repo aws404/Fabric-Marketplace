@@ -18,7 +18,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
 
-public class ListSimpleOrderScreen extends ContainerBase implements OrderListScreen {
+public class ListSimpleOrderScreen extends ContainerBase {
 
     private static final ItemStack CONFIRM = createItem(Items.GREEN_DYE, new LiteralText("Confirm Trade"), null);
     private static final ItemStack NO_SELECTED_INPUT = createItem(Items.RED_STAINED_GLASS_PANE, new LiteralText("Select something to sell"), null);
@@ -31,9 +31,10 @@ public class ListSimpleOrderScreen extends ContainerBase implements OrderListScr
     public ListSimpleOrderScreen(ServerPlayerEntity player) {
         super(player, new LiteralText("What would you like to sell?"), 3);
 
-        registerButton(10, new Button(playerEntity -> {
-            new SelectorScreen<>(player, "Currency", MarketRegistry.getCurrencyBuilders(), currencyBuilder -> currencyBuilder.createSelector(playerEntity, this, "input")).open();
-        }, () -> {
+        registerButton(10, new Button(playerEntity -> new SelectorScreen<>(player, "Currency", MarketRegistry.getCurrencyBuilders(), currencyBuilder -> currencyBuilder.createSelector(playerEntity, currencyInstance -> {
+            this.input = currencyInstance;
+            this.open();
+        })).open(), () -> {
             if (input == null) {
                 return NO_SELECTED_INPUT;
             } else {
@@ -92,9 +93,10 @@ public class ListSimpleOrderScreen extends ContainerBase implements OrderListScr
             return createItem(Items.ITEM_FRAME, new LiteralText("Transaction Information").formatted(Formatting.YELLOW), lore);
         }));
 
-        registerButton(12, new Button(playerEntity -> {
-            new SelectorScreen<>(player, "Currency", MarketRegistry.getCurrencyBuilders(), currencyBuilder -> currencyBuilder.createSelector(playerEntity, this, "output")).open();
-        }, () -> {
+        registerButton(12, new Button(playerEntity -> new SelectorScreen<>(player, "Currency", MarketRegistry.getCurrencyBuilders(), currencyBuilder -> currencyBuilder.createSelector(playerEntity, currencyInstance -> {
+            this.output = currencyInstance;
+            this.open();
+        })).open(), () -> {
             if (output == null) {
                 return NO_SELECTED_OUTPUT;
             } else {
@@ -149,23 +151,4 @@ public class ListSimpleOrderScreen extends ContainerBase implements OrderListScr
         }
     }
 
-    @Override
-    public void setInput(CurrencyInstance currencyInstance) {
-        input = currencyInstance;
-    }
-
-    @Override
-    public void setOutput(CurrencyInstance currencyInstance) {
-        output = currencyInstance;
-    }
-
-    @Override
-    public CurrencyInstance getInput() {
-        return input;
-    }
-
-    @Override
-    public CurrencyInstance getOutput() {
-        return output;
-    }
 }

@@ -3,7 +3,6 @@ package io.github.aws404.market.currency.types;
 import io.github.aws404.market.MarketRegistry;
 import io.github.aws404.market.currency.CurrencyInstance;
 import io.github.aws404.market.currency.SimpleCurrency;
-import io.github.aws404.market.guis.OrderListScreen;
 import io.github.aws404.util.gui.GuiBase;
 import io.github.aws404.util.input.SignInput;
 import io.github.gunpowder.api.GunpowderMod;
@@ -16,44 +15,17 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 
 import java.math.BigDecimal;
+import java.util.function.Consumer;
 
 public class GunpowderCurrency implements SimpleCurrency {
 
-    public static final GunpowderCurrency INSTANCE = new GunpowderCurrency();
-
     private static final ItemStack DISPLAY = GuiBase.createItem(Items.GOLD_NUGGET, new LiteralText("Dollars"), null);
+
     private BalanceHandler handler;
+    private final Builder builder;
 
-    private GunpowderCurrency() {
-    }
-
-    public static class Builder extends MarketRegistry.CurrencyBuilder {
-
-        @Override
-        public void createSelector(ServerPlayerEntity playerEntity, OrderListScreen screen, String type) {
-            SignInput.createSignNumberHandler("Dollars ($)", "", playerEntity, (playerEntity1, amount) -> {
-                switch (type) {
-                    case "output":
-                        screen.setOutput(new CurrencyInstance(INSTANCE, amount));
-                        break;
-                    case "input":
-                        screen.setInput(new CurrencyInstance(INSTANCE, amount));
-                        break;
-                }
-                screen.open();
-            });
-        }
-
-        @Override
-        public ItemStack getDisplayItem() {
-            return DISPLAY;
-        }
-
-        @Override
-        public SimpleCurrency deSerialise(String serialised) {
-            return INSTANCE;
-        }
-
+    private GunpowderCurrency(Builder builder) {
+        this.builder = builder;
     }
 
     @Override
@@ -104,13 +76,34 @@ public class GunpowderCurrency implements SimpleCurrency {
     }
 
     @Override
-    public String getCode() {
-        return "gunpowder";
+    public MarketRegistry.CurrencyBuilder getBuilder() {
+        return builder;
     }
 
     private void checkHandler() {
         if (handler == null) {
             handler = GunpowderMod.getInstance().getRegistry().getModelHandler(BalanceHandler.class);
         }
+    }
+
+    public static class Builder extends MarketRegistry.CurrencyBuilder {
+
+        public final GunpowderCurrency INSTANCE = new GunpowderCurrency(this);
+
+        @Override
+        public void createSelector(ServerPlayerEntity playerEntity, Consumer<CurrencyInstance> type) {
+            SignInput.createSignNumberHandler("Dollars ($)", "", playerEntity, (playerEntity1, amount) -> type.accept(new CurrencyInstance(INSTANCE, amount)));
+        }
+
+        @Override
+        public ItemStack getDisplayItem() {
+            return DISPLAY;
+        }
+
+        @Override
+        public SimpleCurrency deSerialise(String serialised) {
+            return INSTANCE;
+        }
+
     }
 }

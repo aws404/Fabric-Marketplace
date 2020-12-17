@@ -1,5 +1,6 @@
 package io.github.aws404.market.currency;
 
+import io.github.aws404.market.MarketRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
@@ -21,5 +22,5 @@ public interface SimpleCurrency {
 
     String serialise();
 
-    String getCode();
+    MarketRegistry.CurrencyBuilder getBuilder();
 }

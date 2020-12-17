@@ -1,13 +1,12 @@
 package io.github.aws404.market;
 
 import com.mojang.serialization.Lifecycle;
+import io.github.aws404.market.currency.CurrencyInstance;
 import io.github.aws404.market.currency.SimpleCurrency;
 import io.github.aws404.market.currency.types.ExperienceCurrency;
 import io.github.aws404.market.currency.types.ExperienceLevelsCurrency;
 import io.github.aws404.market.currency.types.GunpowderCurrency;
 import io.github.aws404.market.currency.types.ItemCurrency;
-import io.github.aws404.market.guis.ListSimpleOrderScreen;
-import io.github.aws404.market.guis.OrderListScreen;
 import io.github.aws404.market.guis.templates.GuiSelectable;
 import io.github.aws404.market.orders.BuyOrder;
 import io.github.aws404.market.orders.MarketListing;
@@ -21,6 +20,7 @@ import net.minecraft.util.registry.SimpleRegistry;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -36,9 +36,9 @@ public class MarketRegistry {
 
     public static final OrderTypeBuilder BUY_ORDER = Registry.register(MarketRegistry.ORDER_TYPES, new Identifier("buy_order"), new BuyOrder.Builder());;
 
-    public static final CurrencyBuilder ITEM = Registry.register(MarketRegistry.CURRENCY_TYPES, new Identifier("item"), new ItemCurrency());
-    public static final CurrencyBuilder EXPERIENCE = Registry.register(MarketRegistry.CURRENCY_TYPES, new Identifier("experience"), new ExperienceCurrency());
-    public static final CurrencyBuilder EXPERIENCE_LEVELS = Registry.register(MarketRegistry.CURRENCY_TYPES, new Identifier("experience_levels"), new ExperienceLevelsCurrency());
+    public static final CurrencyBuilder ITEM = Registry.register(MarketRegistry.CURRENCY_TYPES, new Identifier("item"), new ItemCurrency.Builder());
+    public static final CurrencyBuilder EXPERIENCE = Registry.register(MarketRegistry.CURRENCY_TYPES, new Identifier("experience"), new ExperienceCurrency.Builder());
+    public static final CurrencyBuilder EXPERIENCE_LEVELS = Registry.register(MarketRegistry.CURRENCY_TYPES, new Identifier("experience_levels"), new ExperienceLevelsCurrency.Builder());
 
     public static final CurrencyBuilder GUNPOWDER = FabricLoader.getInstance().isModLoaded("gunpowder-currency") ? Registry.register(MarketRegistry.CURRENCY_TYPES, new Identifier("gunpowder"), new GunpowderCurrency.Builder()) : null;
 
@@ -61,10 +61,16 @@ public class MarketRegistry {
     public abstract static class OrderTypeBuilder implements GuiSelectable {
         public abstract MarketListing fromSet(MarketInstance instance, ResultSet set);
         public abstract void openListGui(ServerPlayerEntity playerEntity);
+        public Identifier getIdentifier() {
+            return ORDER_TYPES.getId(this);
+        }
     }
 
     public abstract static class CurrencyBuilder implements GuiSelectable {
         public abstract SimpleCurrency deSerialise(String serialised);
-        public abstract void createSelector(ServerPlayerEntity playerEntity, OrderListScreen screen, String type);
+        public abstract void createSelector(ServerPlayerEntity playerEntity, Consumer<CurrencyInstance> type);
+        public Identifier getIdentifier() {
+            return CURRENCY_TYPES.getId(this);
+        }
     }
 }
